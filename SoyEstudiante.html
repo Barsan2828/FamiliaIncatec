@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+  <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
@@ -1312,6 +1313,302 @@
   .serv-card:nth-child(7) .serv-icono svg{ stroke:#d1487a; }
   .serv-card:nth-child(8) .serv-icono svg{ stroke:#0e7fb5; }
 
+  /* ===== Modal Bienestar (elegante, con pestañas) ===== */
+  .bienestar-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(10,18,48,.80);
+    backdrop-filter:blur(4px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:400;
+    padding:20px;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity .3s ease, visibility 0s linear .3s;
+  }
+  .bienestar-overlay.activo{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transition:opacity .3s ease, visibility 0s linear 0s;
+  }
+  .bienestar-modal{
+    background:#fffefb;
+    width:100%;
+    max-width:900px;
+    max-height:86vh;
+    border-radius:20px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    box-shadow:0 24px 60px rgba(0,0,0,.35);
+    border:1px solid rgba(212,175,55,.35);
+    transform:scale(.94) translateY(10px);
+    transition:transform .3s ease;
+  }
+  .bienestar-overlay.activo .bienestar-modal{ transform:scale(1) translateY(0); }
+
+  .bienestar-header{
+    position:relative;
+    background:
+      radial-gradient(ellipse at 85% 0%, rgba(212,175,55,.18) 0%, transparent 55%),
+      linear-gradient(135deg, var(--azul-1) 0%, var(--azul-2) 100%);
+    padding:28px 34px 22px;
+    flex-shrink:0;
+  }
+  .bienestar-header .eyebrow{
+    display:flex; align-items:center; gap:10px;
+    color:var(--amarillo);
+    font-family:'Poppins', sans-serif;
+    font-weight:700; font-size:11.5px;
+    letter-spacing:2.5px;
+    text-transform:uppercase;
+    margin-bottom:10px;
+  }
+  .bienestar-header .eyebrow .linea{
+    width:24px; height:1.5px; background:var(--amarillo); display:inline-block;
+  }
+  .bienestar-header h3{
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
+    font-size:23px;
+    color:#fff;
+    margin-bottom:6px;
+  }
+  .bienestar-header p{
+    font-family:'Poppins', sans-serif;
+    font-size:13px;
+    color:#c3c9ea;
+    max-width:600px;
+    line-height:1.55;
+  }
+  .bienestar-modal-close{
+    position:absolute;
+    top:18px; right:20px;
+    width:34px; height:34px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.3);
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    font-size:16px;
+    cursor:pointer;
+    transition:background .2s ease;
+    z-index:2;
+  }
+  .bienestar-modal-close:hover{ background:rgba(255,255,255,.2); }
+
+  .bienestar-tabs{
+    display:flex;
+    gap:6px;
+    padding:16px 34px 0;
+    flex-shrink:0;
+    background:#fffefb;
+    border-bottom:1px solid #ece7d9;
+    flex-wrap:wrap;
+  }
+  .bienestar-tab{
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:13px;
+    color:#5b5f73;
+    background:none;
+    border:none;
+    padding:12px 18px;
+    cursor:pointer;
+    position:relative;
+    transition:color .2s ease;
+  }
+  .bienestar-tab::after{
+    content:"";
+    position:absolute;
+    left:18px; right:18px; bottom:-1px;
+    height:3px;
+    background:transparent;
+    border-radius:3px 3px 0 0;
+    transition:background .2s ease;
+  }
+  .bienestar-tab.activo{ color:var(--azul-1); }
+  .bienestar-tab.activo::after{ background:var(--amarillo); }
+  .bienestar-tab:hover{ color:var(--azul-2); }
+
+  .bienestar-body{
+    padding:26px 34px 32px;
+    overflow-y:auto;
+  }
+  .bienestar-panel{ display:none; }
+  .bienestar-panel.activo{ display:block; }
+
+  /* ---- Panel Becas ---- */
+  .becas-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:18px;
+  }
+  @media (max-width:700px){ .becas-grid{ grid-template-columns:1fr; } }
+
+  .beca-card{
+    position:relative;
+    background:linear-gradient(160deg, #0d1740 0%, var(--azul-1) 100%);
+    border:1px solid rgba(212,175,55,.3);
+    border-radius:14px;
+    padding:22px 20px 24px;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+    transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .beca-card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 16px 30px rgba(10,26,92,.3);
+  }
+  .beca-card .beca-tag{
+    display:inline-flex;
+    align-self:flex-start;
+    font-size:10.5px;
+    font-weight:700;
+    letter-spacing:.5px;
+    color:var(--amarillo);
+    border:1px solid rgba(212,175,55,.4);
+    padding:4px 10px;
+    border-radius:20px;
+  }
+  .beca-card h4{
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
+    font-size:16px;
+    line-height:1.3;
+  }
+  .beca-card p{
+    font-size:12.5px;
+    color:#c3c9ea;
+    line-height:1.55;
+  }
+
+  /* ---- Panel Rutas ---- */
+  .rutas-intro{
+    font-size:13.5px;
+    color:#5b5f73;
+    line-height:1.6;
+    max-width:700px;
+    margin-bottom:20px;
+  }
+  .rutas-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:16px;
+  }
+  @media (max-width:700px){ .rutas-grid{ grid-template-columns:1fr; } }
+
+  .ruta-card{
+    background:#fff;
+    border:1px solid #e3e2ee;
+    border-left:4px solid var(--azul-2);
+    border-radius:12px;
+    padding:18px 20px;
+    transition:box-shadow .25s ease;
+  }
+  .ruta-card:hover{ box-shadow:0 10px 22px rgba(28,63,174,.12); }
+  .ruta-card h4{
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
+    font-size:14.5px;
+    color:#111;
+    margin-bottom:6px;
+  }
+  .ruta-card p{
+    font-size:12.5px;
+    color:#5b5f73;
+    line-height:1.5;
+    margin-bottom:12px;
+  }
+  .ruta-toggle{
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:12px;
+    color:var(--azul-2);
+    background:none;
+    border:none;
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+  }
+  .ruta-toggle:hover{ color:var(--amarillo-hover); }
+  .ruta-toggle .flecha{ transition:transform .25s ease; display:inline-block; }
+  .ruta-card.expandida .ruta-toggle .flecha{ transform:rotate(180deg); }
+
+  .ruta-detalle{
+    display:none;
+    margin-top:14px;
+    padding-top:14px;
+    border-top:1px dashed #e3e2ee;
+    grid-template-columns:1fr 1fr;
+    gap:18px;
+  }
+  .ruta-card.expandida .ruta-detalle{ display:grid; }
+  @media (max-width:560px){ .ruta-detalle{ grid-template-columns:1fr; } }
+
+  .ruta-columna h5{
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
+    font-size:11px;
+    letter-spacing:.5px;
+    text-transform:uppercase;
+    color:var(--azul-1);
+    margin-bottom:8px;
+  }
+  .ruta-columna ol{
+    padding-left:16px;
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .ruta-columna li{
+    font-size:12px;
+    color:#3a3f55;
+    line-height:1.5;
+  }
+  .ruta-columna li::marker{ color:var(--amarillo-hover); font-weight:700; }
+
+  /* ---- Panel Deporte y Cultura ---- */
+  .dc-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:16px;
+  }
+  @media (max-width:700px){ .dc-grid{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:480px){ .dc-grid{ grid-template-columns:1fr; } }
+
+  .dc-card{
+    background:#fff;
+    border:1px solid #e3e2ee;
+    border-top:4px solid var(--amarillo);
+    border-radius:12px;
+    padding:18px 18px 20px;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .dc-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 24px rgba(28,63,174,.14);
+    border-top-color:var(--azul-2);
+  }
+  .dc-card h4{
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
+    font-size:14px;
+    color:#111;
+    margin-bottom:6px;
+  }
+  .dc-card p{
+    font-size:12px;
+    color:#5b5f73;
+    line-height:1.5;
+  }
+
   /* ===== Sección Fechas Clave / Calendarios Académicos ===== */
   .fechas-section{
     background-color:#fffaf3;
@@ -2001,7 +2298,7 @@
       </div>
 
       <!-- 4. Bienestar -->
-      <div class="serv-card">
+      <div class="serv-card" id="cardBienestar">
         <div class="serv-icono">
           <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
         </div>
@@ -2055,11 +2352,11 @@
       <h3>🖥️ Campus Virtual</h3>
       <p>Selecciona tu sede para ingresar al campus virtual</p>
       <div class="campus-opciones">
-        <a href="https://q10.com/login" target="_blank" rel="noopener" class="campus-opcion">
+        <a href="https://site6.q10.com/login?ReturnUrl=%2F&aplentId=7aa7ed1e-2062-4e3c-8d43-3f3a1a89b565" target="_blank" rel="noopener" class="campus-opcion">
           <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           Q10 Facatativá
         </a>
-        <a href="https://q10.com/login" target="_blank" rel="noopener" class="campus-opcion">
+        <a href="https://site6.q10.com/login?ReturnUrl=%2F&aplentId=041b4999-efbb-491a-99b5-a402c276d026" target="_blank" rel="noopener" class="campus-opcion">
           <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           Q10 Madrid
         </a>
@@ -2125,6 +2422,74 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ===== Modal Bienestar (Becas / Rutas Establecidas / Deporte y Cultura) ===== -->
+  <div class="bienestar-overlay" id="bienestarOverlay">
+    <div class="bienestar-modal">
+
+      <div class="bienestar-header">
+        <button class="bienestar-modal-close" id="bienestarClose" aria-label="Cerrar">✕</button>
+        <div class="eyebrow"><span class="linea"></span>BIENESTAR INSTITUCIONAL</div>
+        <h3>Acompañamiento integral para nuestros estudiantes</h3>
+        <p>Conoce nuestras becas, las rutas de atención establecidas y los espacios de deporte y cultura.</p>
+      </div>
+
+      <div class="bienestar-tabs">
+        <button class="bienestar-tab activo" data-tab="becas">Becas</button>
+        <button class="bienestar-tab" data-tab="rutas">Rutas Establecidas</button>
+        <button class="bienestar-tab" data-tab="deporte">Deporte y Cultura</button>
+      </div>
+
+      <div class="bienestar-body">
+
+        <!-- ---- BECAS ---- -->
+        <div class="bienestar-panel activo" id="panel-becas">
+          <div class="becas-grid">
+            <div class="beca-card">
+              <span class="beca-tag">Mérito académico</span>
+              <h4>Beca de Excelencia</h4>
+              <p>Reconoce a los estudiantes con los mejores promedios académicos, apoyando la continuidad de su formación técnica.</p>
+            </div>
+            <div class="beca-card">
+              <span class="beca-tag">Fuerza pública</span>
+              <h4>Beca Héroe en Formación</h4>
+              <p>Dirigida a miembros de la fuerza pública y sus familias, como reconocimiento a su servicio y compromiso con el país.</p>
+            </div>
+            <div class="beca-card">
+              <span class="beca-tag">Reparación social</span>
+              <h4>Aprender para Reparar</h4>
+              <p>Un espacio de oportunidad para población víctima del conflicto, con acceso a educación técnica como camino de transformación.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ---- RUTAS ESTABLECIDAS ---- -->
+        <div class="bienestar-panel" id="panel-rutas">
+          <p class="rutas-intro">INCATEC cuenta con rutas de atención claras y confidenciales frente a distintas situaciones de bienestar. Haz clic en "Ver ruta completa" para conocer el paso a paso.</p>
+          <div class="rutas-grid" id="rutasGrid"></div>
+        </div>
+
+        <!-- ---- DEPORTE Y CULTURA ---- -->
+        <div class="bienestar-panel" id="panel-deporte">
+          <div class="dc-grid">
+            <div class="dc-card">
+              <h4>Fútbol y Microfútbol</h4>
+              <p>Entrenamientos y torneos internos para fortalecer el trabajo en equipo y la vida saludable.</p>
+            </div>
+            <div class="dc-card">
+              <h4>Talleres Culturales</h4>
+              <p>Actividades periódicas de arte, teatro y expresiones culturales locales.</p>
+            </div>
+            <div class="dc-card">
+              <h4>Vida Saludable</h4>
+              <p>Campañas de bienestar físico y mental para toda la comunidad INCATEC.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
 
@@ -2498,6 +2863,180 @@
       cardPractica.addEventListener('click', function(e){ e.stopPropagation(); practicaOverlay.classList.add('activo'); });
       practicaClose.addEventListener('click', () => practicaOverlay.classList.remove('activo'));
       practicaOverlay.addEventListener('click', (e) => { if(e.target === practicaOverlay) practicaOverlay.classList.remove('activo'); });
+    }
+
+    // ===== Modal Bienestar =====
+    const bienestarOverlay = document.getElementById('bienestarOverlay');
+    const bienestarClose = document.getElementById('bienestarClose');
+    const cardBienestar = document.getElementById('cardBienestar');
+
+    if(cardBienestar && bienestarOverlay){
+      cardBienestar.addEventListener('click', function(e){
+        e.stopPropagation();
+        bienestarOverlay.classList.add('activo');
+      });
+      bienestarClose.addEventListener('click', () => bienestarOverlay.classList.remove('activo'));
+      bienestarOverlay.addEventListener('click', (e) => {
+        if(e.target === bienestarOverlay) bienestarOverlay.classList.remove('activo');
+      });
+    }
+
+    // Pestañas del modal Bienestar
+    document.querySelectorAll('.bienestar-tab').forEach(tab => {
+      tab.addEventListener('click', function(){
+        document.querySelectorAll('.bienestar-tab').forEach(t => t.classList.remove('activo'));
+        document.querySelectorAll('.bienestar-panel').forEach(p => p.classList.remove('activo'));
+        this.classList.add('activo');
+        document.getElementById('panel-' + this.dataset.tab).classList.add('activo');
+      });
+    });
+
+    // Datos y render de las Rutas Establecidas (resumen del brochure institucional)
+    const rutasData = [
+      {
+        titulo: "Acoso de Administrativos a Estudiantes",
+        resumen: "Protocolo de atención cuando un estudiante reporta una situación de acoso por parte de personal administrativo.",
+        lider: [
+          "Recibe y escucha el caso, brinda contención inicial y garantiza confidencialidad.",
+          "Activa la ruta institucional e informa de inmediato a Coordinación Académica y Dirección.",
+          "Remite el caso a instancias competentes cuando la gravedad lo requiere (Secretaría de Educación, Comisaría de Familia o Fiscalía).",
+          "Hace seguimiento y acompaña al estudiante hasta el cierre del proceso."
+        ],
+        docentes: [
+          "Detecta o recibe el reporte, escucha sin emitir juicios y garantiza confidencialidad y seguridad.",
+          "Traslada el caso al líder de Bienestar, entregando la información documentada de manera inmediata.",
+          "Apoya medidas de protección inicial si el líder de convivencia lo requiere.",
+          "Acompaña el seguimiento del caso y se asegura de que se apliquen las medidas correspondientes."
+        ]
+      },
+      {
+        titulo: "Acoso de Estudiantes a Administrativos",
+        resumen: "Ruta de atención frente a situaciones de acoso reportadas por personal administrativo o docente.",
+        lider: [
+          "Identifica o recibe el reporte y confirma con el afectado los hechos, garantizando un entorno seguro.",
+          "Activa la ruta institucional, informa al comité de convivencia escolar y a la Dirección.",
+          "Analiza la gravedad del caso y determina si el hecho reviste alguna característica disciplinaria, vulneración o amenaza.",
+          "Realiza seguimiento y verifica el cumplimiento de las acciones correctivas o sancionatorias."
+        ],
+        docentes: [
+          "Reporta el caso al líder de Bienestar, indicando la información disponible y el contexto.",
+          "Apoya la intervención inicial si el líder de convivencia así lo requiere.",
+          "Colabora en la aplicación de la ruta institucional cuando sea convocado.",
+          "Realiza seguimiento y verifica el cumplimiento de la ruta activada."
+        ]
+      },
+      {
+        titulo: "Acoso de Docentes a Estudiantes",
+        resumen: "Protocolo de atención ante reportes de acoso realizados por docentes o personal académico hacia estudiantes.",
+        lider: [
+          "Recibe y escucha la situación afectada, brinda orientación y garantiza confidencialidad y seguridad.",
+          "Activa la ruta institucional, informa de inmediato a la Dirección y Rectoría.",
+          "Realiza la revisión externa si es necesario, cuando se identifiquen vulneraciones de derechos graves.",
+          "Hace seguimiento al caso y verifica la aplicación de las medidas de protección y restitución de derechos."
+        ],
+        docentes: [
+          "Recibe y direcciona el reporte al líder de Bienestar, comparte información y evita emitir juicios que puedan afectar el proceso.",
+          "Registra la información en el formato institucional correspondiente.",
+          "Apoya las medidas de protección inicial acordadas con el líder de Bienestar.",
+          "Acompaña el seguimiento y garantiza un entorno seguro para el estudiante."
+        ]
+      },
+      {
+        titulo: "Violencia Sexual",
+        resumen: "Ruta de atención confidencial y prioritaria frente a situaciones de violencia sexual reportadas por estudiantes o egresados.",
+        lider: [
+          "Brinda orientación y diligencia el formato institucional de orientación al estudiante.",
+          "Si el caso lo requiere, coordina la remisión a las autoridades competentes.",
+          "Realiza la respectiva remisión a entidades externas de protección, según el caso.",
+          "Activa la ruta institucional externa (Secretaría de Educación, Comisaría de Familia o Fiscalía)."
+        ],
+        docentes: [
+          "Escucha y remite el caso de manera inmediata al líder de Bienestar.",
+          "Brinda contención emocional al estudiante y garantiza confidencialidad.",
+          "Evita cualquier acción que pueda revictimizar a la persona afectada.",
+          "Hace seguimiento y acompaña el proceso hasta su cierre."
+        ]
+      },
+      {
+        titulo: "Consumo de Sustancias Psicoactivas",
+        resumen: "Acompañamiento a estudiantes y egresados frente a situaciones relacionadas con el consumo de sustancias psicoactivas.",
+        lider: [
+          "Brinda orientación y diligencia el formato institucional de orientación al estudiante.",
+          "Facilita la remisión a redes de apoyo externas o entidades especializadas si el caso lo amerita.",
+          "Realiza seguimiento al caso de forma periódica.",
+          "Articula con las entidades de salud correspondientes cuando sea necesario."
+        ],
+        docentes: [
+          "Brinda orientación diligenciando el formato institucional correspondiente.",
+          "Refiere el caso al líder de Bienestar, informando el contexto observado.",
+          "Realiza seguimiento en el aula y reporta cualquier cambio relevante.",
+          "Acompaña el proceso de manera respetuosa y confidencial."
+        ]
+      },
+      {
+        titulo: "Conducta Suicida",
+        resumen: "Protocolo de atención inmediata frente a señales o reportes de riesgo de conducta suicida en la comunidad estudiantil.",
+        lider: [
+          "Realiza primeros auxilios psicológicos y activa la atención inmediata.",
+          "Brinda orientación diligenciando el formato institucional y activa la ruta de remisión a salud mental.",
+          "Realiza seguimiento cercano al caso.",
+          "Articula con la EPS o entidad de salud correspondiente para garantizar la atención especializada."
+        ],
+        docentes: [
+          "Al tener conocimiento de un posible riesgo, informa de inmediato al líder de Bienestar sin dejar sola a la persona.",
+          "Evita minimizar la situación y mantiene una actitud de escucha y contención.",
+          "Colabora con la activación de la ruta institucional.",
+          "El líder de Bienestar y sus agentes realizan seguimiento riguroso del caso."
+        ]
+      },
+      {
+        titulo: "Violencia Intrafamiliar",
+        resumen: "Ruta de acompañamiento para estudiantes o egresados que reporten situaciones de violencia al interior de su núcleo familiar.",
+        lider: [
+          "Brinda orientación y diligencia el formato institucional de orientación al estudiante.",
+          "Realiza la respectiva remisión a entidades externas de protección familiar.",
+          "Activa la ruta externa de acompañamiento psicosocial.",
+          "Realiza seguimiento al caso hasta verificar la disminución del riesgo."
+        ],
+        docentes: [
+          "Brinda contención emocional y escucha activa, sin emitir juicios.",
+          "Remite la información al líder de Bienestar de manera confidencial.",
+          "Apoya el acompañamiento cercano al estudiante durante el proceso.",
+          "Realiza seguimiento en el entorno académico y reporta cambios relevantes."
+        ]
+      }
+    ];
+
+    const rutasGrid = document.getElementById('rutasGrid');
+    if(rutasGrid){
+      rutasData.forEach((ruta, i) => {
+        const card = document.createElement('div');
+        card.className = 'ruta-card';
+        card.innerHTML = `
+          <h4>${ruta.titulo}</h4>
+          <p>${ruta.resumen}</p>
+          <button class="ruta-toggle" data-idx="${i}">
+            Ver ruta completa <span class="flecha">▾</span>
+          </button>
+          <div class="ruta-detalle">
+            <div class="ruta-columna">
+              <h5>Líder de Bienestar</h5>
+              <ol>${ruta.lider.map(p => `<li>${p}</li>`).join('')}</ol>
+            </div>
+            <div class="ruta-columna">
+              <h5>Docentes y/o Administrativos</h5>
+              <ol>${ruta.docentes.map(p => `<li>${p}</li>`).join('')}</ol>
+            </div>
+          </div>
+        `;
+        rutasGrid.appendChild(card);
+      });
+
+      rutasGrid.querySelectorAll('.ruta-toggle').forEach(btn => {
+        btn.addEventListener('click', function(){
+          this.closest('.ruta-card').classList.toggle('expandida');
+        });
+      });
     }
   </script>
 
