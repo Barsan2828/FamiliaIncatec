@@ -1243,6 +1243,37 @@
   .eg-card.activo .eg-nombre{ color:#0a1230; }
   .eg-card.activo .eg-desc{ color:rgba(10,18,48,.75); }
 
+  .eg-card-testimonios{ cursor:default; }
+  .eg-testimonios-links{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin-top:14px;
+  }
+  .eg-testimonio-link{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:12.5px;
+    color:#fff;
+    background:#FF0000;
+    padding:9px 12px;
+    border-radius:8px;
+    text-decoration:none;
+    transition:background .2s ease, transform .2s ease;
+  }
+  .eg-testimonio-link svg{
+    flex-shrink:0;
+    fill:#fff;
+    stroke:none;
+  }
+  .eg-testimonio-link:hover{
+    background:#cc0000;
+    transform:translateX(3px);
+  }
+
   .eg-icono{
     width:52px;
     height:52px;
@@ -2092,6 +2123,8 @@
     padding:44px 40px 40px;
     max-width:680px;
     width:100%;
+    max-height:88vh;
+    overflow-y:auto;
     box-shadow:0 30px 70px rgba(0,0,0,.35);
     position:relative;
     transform:scale(.93) translateY(12px);
@@ -2197,6 +2230,57 @@
     line-height:1.6; text-align:left;
   }
   .homolog-info strong{ color:#0a1230; }
+
+  .convenios-section-title{
+    font-family:'Poppins', sans-serif;
+    font-weight:700;
+    font-size:16px;
+    color:var(--azul-1);
+    margin:28px 0 12px;
+    padding-top:20px;
+    border-top:1px solid #e3e2ee;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .convenios-section-title::before{
+    content:"";
+    width:22px; height:3px;
+    background:var(--amarillo);
+    display:inline-block;
+    border-radius:2px;
+  }
+
+  .testimonios-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:16px;
+  }
+  @media (max-width:700px){ .testimonios-grid{ grid-template-columns:1fr; } }
+
+  .testimonio-card{
+    background:linear-gradient(160deg, #0d1740 0%, var(--azul-1) 100%);
+    border:1px solid rgba(212,175,55,.3);
+    border-radius:14px;
+    padding:20px 18px;
+    color:#fff;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .testimonio-texto{
+    font-family:'Poppins', sans-serif;
+    font-size:12.5px;
+    font-style:italic;
+    color:#dfe3f5;
+    line-height:1.6;
+  }
+  .testimonio-autor{
+    font-family:'Poppins', sans-serif;
+    font-weight:600;
+    font-size:11.5px;
+    color:var(--amarillo);
+  }
 </style>
 </head>
 <body>
@@ -2261,10 +2345,9 @@
             👋 ¡Hola, egresado INCATEC!<br>Soy <strong>Aukán</strong>, tu guía.<br><em>¿En qué te puedo ayudar?</em>
           </span>
           <span class="aukan-msg" id="msgDatos">📋 <strong>Actualiza tus datos</strong><br>Así podrás recibir oportunidades laborales, certificados y beneficios exclusivos para egresados.</span>
-          <span class="aukan-msg" id="msgRueda">🤝 <strong>Rueda de Negocios</strong><br>Conecta con empresas, inversionistas y aliados. ¡Ideal si tienes un emprendimiento!</span>
           <span class="aukan-msg" id="msgEmpleabilidad">🚀 <strong>Empleabilidad</strong><br>Tenemos talleres, asesorías de hoja de vida y recursos para que tu perfil brille en el mercado laboral.</span>
           <span class="aukan-msg" id="msgLaboral">💼 <strong>Oferta Laboral</strong><br>Vacantes exclusivas para egresados INCATEC. ¡Tu título técnico abre puertas!</span>
-          <span class="aukan-msg" id="msgConvenios">🎁 <strong>Convenios</strong><br>Descuentos en salud, recreación, viajes y más. Beneficios que siguen contigo después de graduarte.</span>
+          <span class="aukan-msg" id="msgConvenios">🎁 <strong>Convenios</strong><br>Descuentos, homologación universitaria y testimonios de egresados. Beneficios que siguen contigo después de graduarte.</span>
           <span class="aukan-msg" id="msgUniversitario">🎓 <strong>Homologación</strong><br>Continúa tu formación universitaria con nuestros aliados y aprovecha tu título técnico como ventaja.</span>
         </div>
         <div class="aukan-img-wrapper">
@@ -2284,14 +2367,6 @@
         </div>
 
 
-        <div class="eg-card" data-msg="msgRueda">
-          <div class="eg-icono">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/><path d="M3.05 11a9 9 0 1 0 .5-2.5"/></svg>
-          </div>
-          <h3 class="eg-nombre">Rueda de Negocios</h3>
-          <p class="eg-desc">Conecta con empresas, inversionistas y aliados estratégicos en nuestros eventos para emprendedores.</p>
-        </div>
-
         <div class="eg-card" data-msg="msgEmpleabilidad">
           <div class="eg-icono">
             <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
@@ -2308,20 +2383,34 @@
           <p class="eg-desc">Consulta las vacantes disponibles de nuestras empresas aliadas, especialmente diseñadas para egresados INCATEC.</p>
         </div>
 
-        <div class="eg-card" data-msg="msgConvenios">
+        <div class="eg-card" id="cardConvenios" data-msg="msgConvenios">
           <div class="eg-icono">
             <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
           </div>
           <h3 class="eg-nombre">Convenios</h3>
-          <p class="eg-desc">Accede a beneficios exclusivos con empresas aliadas en salud, recreación, viajes, seguros y más.</p>
+          <p class="eg-desc">Beneficios exclusivos, homologación universitaria y testimonios de nuestros egresados.</p>
         </div>
 
-        <div class="eg-card" id="cardHomologacion" data-msg="msgUniversitario">
+        <div class="eg-card eg-card-testimonios">
           <div class="eg-icono">
-            <svg viewBox="0 0 24 24"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+            <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
           </div>
-          <h3 class="eg-nombre">Homologación Universitaria</h3>
-          <p class="eg-desc">Continúa tu carrera universitaria con nuestras alianzas de homologación. Tu título técnico vale más aquí.</p>
+          <h3 class="eg-nombre">Testimonios</h3>
+          <p class="eg-desc">Conoce las historias de nuestros egresados en video.</p>
+          <div class="eg-testimonios-links">
+            <a href="https://www.youtube.com/@INCATEC" target="_blank" rel="noopener" class="eg-testimonio-link" onclick="event.stopPropagation()">
+              <svg viewBox="0 0 24 24" width="14" height="14"><polygon points="10 8 16 12 10 16 10 8"/><rect x="1" y="3" width="22" height="18" rx="3"/></svg>
+              Testimonio 1
+            </a>
+            <a href="https://www.youtube.com/@INCATEC" target="_blank" rel="noopener" class="eg-testimonio-link" onclick="event.stopPropagation()">
+              <svg viewBox="0 0 24 24" width="14" height="14"><polygon points="10 8 16 12 10 16 10 8"/><rect x="1" y="3" width="22" height="18" rx="3"/></svg>
+              Testimonio 2
+            </a>
+            <a href="https://www.youtube.com/@INCATEC" target="_blank" rel="noopener" class="eg-testimonio-link" onclick="event.stopPropagation()">
+              <svg viewBox="0 0 24 24" width="14" height="14"><polygon points="10 8 16 12 10 16 10 8"/><rect x="1" y="3" width="22" height="18" rx="3"/></svg>
+              Testimonio 3
+            </a>
+          </div>
         </div>
 
       </div>
@@ -2458,11 +2547,32 @@
     <img src="brochure-veterinaria.jpg" alt="Brochure Asistencia Veterinaria INCATEC">
   </div>
 
-  <!-- ===== Modal Homologación Universitaria ===== -->
-  <div class="homolog-overlay" id="homologOverlay">
+  <!-- ===== Modal Convenios (Beneficios + Homologación + Testimonios) ===== -->
+  <div class="homolog-overlay" id="conveniosOverlay">
     <div class="homolog-modal">
-      <button class="homolog-close" id="homologClose" aria-label="Cerrar">✕</button>
-      <h3>🎓 Homologación Universitaria</h3>
+      <button class="homolog-close" id="conveniosClose" aria-label="Cerrar">✕</button>
+      <h3>🎁 Convenios para Egresados</h3>
+      <p>Beneficios exclusivos, alianzas universitarias y experiencias de quienes ya recorrieron este camino.</p>
+
+      <div class="convenios-section-title">Beneficios y Descuentos</div>
+      <div class="homolog-unis">
+        <div class="homolog-uni" style="cursor:default;">
+          <div class="homolog-uni-logo-placeholder" style="background:var(--azul-1); color:#fff;">
+            SALUD
+          </div>
+          <h4>Aliados en Salud</h4>
+          <p>Descuentos en consultas, exámenes y servicios de salud con nuestras entidades aliadas.</p>
+        </div>
+        <div class="homolog-uni" style="cursor:default;">
+          <div class="homolog-uni-logo-placeholder" style="background:var(--amarillo-hover); color:#fff;">
+            VIAJES
+          </div>
+          <h4>Recreación y Viajes</h4>
+          <p>Tarifas preferenciales en planes turísticos, recreación y bienestar para egresados INCATEC.</p>
+        </div>
+      </div>
+
+      <div class="convenios-section-title">Homologación Universitaria</div>
       <p>Con tu título técnico de INCATEC puedes continuar tu formación universitaria. Conoce nuestras universidades aliadas:</p>
 
       <div class="homolog-unis">
@@ -2492,6 +2602,22 @@
       <div class="homolog-info">
         <strong>¿Cómo funciona?</strong> Presenta tu certificado técnico de INCATEC ante la universidad de tu elección y solicita el estudio de homologación. Un asesor te guiará en el proceso. Para más información escríbenos a
         <strong>g.garzon@familiaincatec.edu.co</strong>
+      </div>
+
+      <div class="convenios-section-title">Testimonios de Egresados</div>
+      <div class="testimonios-grid">
+        <div class="testimonio-card">
+          <p class="testimonio-texto">"Gracias a mi título técnico en INCATEC pude homologar directamente al tercer semestre de universidad. El acompañamiento fue clave."</p>
+          <div class="testimonio-autor">— Egresado, Programa Técnico Administrativo</div>
+        </div>
+        <div class="testimonio-card">
+          <p class="testimonio-texto">"Los convenios de salud y recreación me han servido muchísimo después de graduarme. Se siente que uno sigue siendo parte de la familia INCATEC."</p>
+          <div class="testimonio-autor">— Egresada, Programa Técnico en Salud</div>
+        </div>
+        <div class="testimonio-card">
+          <p class="testimonio-texto">"El proceso de homologación fue más sencillo de lo que pensaba. Hoy sigo estudiando gracias a esa alianza."</p>
+          <div class="testimonio-autor">— Egresado, Programa Técnico Administrativo</div>
+        </div>
       </div>
     </div>
   </div>
@@ -2655,40 +2781,6 @@
       });
     });
 
-    // ===== Tarjetas Egresados + Aukán reacciona =====
-    const msgBienvenida = document.getElementById('msgBienvenida');
-
-    document.querySelectorAll('#egGrid .eg-card').forEach(card => {
-      card.addEventListener('click', function(){
-        const yaActivo = this.classList.contains('activo');
-
-        // Desactivar todas las tarjetas
-        document.querySelectorAll('#egGrid .eg-card').forEach(c => c.classList.remove('activo'));
-
-        // Ocultar todos los mensajes
-        document.querySelectorAll('.aukan-msg').forEach(m => m.classList.remove('visible'));
-
-        if(yaActivo){
-          // Si ya estaba activo, volver al estado inicial
-          if(aukanGlobo) aukanGlobo.classList.remove('activo-dorado');
-          if(msgBienvenida) msgBienvenida.classList.add('visible');
-        } else {
-          // Activar la tarjeta clicada
-          this.classList.add('activo');
-
-          // Cambiar mensaje de Aukán según la tarjeta
-          const msgId = this.dataset.msg;
-          if(msgId){
-            const msgEl = document.getElementById(msgId);
-            if(msgEl) msgEl.classList.add('visible');
-          }
-
-          // Cambiar color del globo
-          if(aukanGlobo) aukanGlobo.classList.add('activo-dorado');
-        }
-      });
-    });
-
     // ===== Modal Campus Virtual =====
     const campusOverlay = document.getElementById('campusOverlay');
     const campusClose = document.getElementById('campusClose');
@@ -2712,30 +2804,31 @@
       });
     }
 
-    // ===== Modal Homologación Universitaria =====
-    const homologOverlay = document.getElementById('homologOverlay');
-    const homologClose = document.getElementById('homologClose');
-    const cardHomologacion = document.getElementById('cardHomologacion');
+    // ===== Modal Convenios (Beneficios + Homologación + Testimonios) =====
+    const conveniosOverlay = document.getElementById('conveniosOverlay');
+    const conveniosClose = document.getElementById('conveniosClose');
+    const cardConvenios = document.getElementById('cardConvenios');
 
-    if(cardHomologacion && homologOverlay){
-      cardHomologacion.addEventListener('click', function(e){
+    if(cardConvenios && conveniosOverlay){
+      cardConvenios.addEventListener('click', function(e){
         e.stopPropagation();
         // Activar tarjeta y mensaje Aukán
         document.querySelectorAll('#egGrid .eg-card').forEach(c => c.classList.remove('activo'));
         this.classList.add('activo');
         document.querySelectorAll('.aukan-msg').forEach(m => m.classList.remove('visible'));
-        const msgEl = document.getElementById('msgUniversitario');
+        const msgEl = document.getElementById('msgConvenios');
         if(msgEl) msgEl.classList.add('visible');
         if(aukanGlobo) aukanGlobo.classList.add('activo-dorado');
         // Abrir modal
-        homologOverlay.classList.add('activo');
+        conveniosOverlay.classList.add('activo');
       });
-      homologClose.addEventListener('click', () => homologOverlay.classList.remove('activo'));
-      homologOverlay.addEventListener('click', (e) => {
-        if(e.target === homologOverlay) homologOverlay.classList.remove('activo');
+      conveniosClose.addEventListener('click', () => conveniosOverlay.classList.remove('activo'));
+      conveniosOverlay.addEventListener('click', (e) => {
+        if(e.target === conveniosOverlay) conveniosOverlay.classList.remove('activo');
       });
     }
   </script>
 
 </body>
 </html>
+ 
